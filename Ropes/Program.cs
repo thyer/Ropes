@@ -10,9 +10,9 @@ namespace Ropes
 	{
 		static void Main(string[] args)
 		{
-			Rope hello = RopeBuilder.build("hello, world");
+			Rope hello = RopeBuilder.BUILD("hello, world");
 			Console.WriteLine(hello.ToString());
-			Console.WriteLine(hello.Append('!'));
+			Rope helloYell = hello.Append('!').Append("!!");
 			Console.WriteLine(hello.StartsWith("!"));
 		}
 	}

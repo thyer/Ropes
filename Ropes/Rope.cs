@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections;
-using System.Runtime.Serialization;
+using System.Collections.Generic;
+using Ropes.Implementations;
 
-public interface Rope : ISerializable, IEnumerable, IComparable
+public interface Rope : IEnumerable, IComparable
 {
 	/// <summary>
 	/// Returns a new rope created by appending the specified character to this rope
@@ -28,6 +29,20 @@ public interface Rope : ISerializable, IEnumerable, IComparable
 	/// <param name="end">the end index, non-inclusive</param>
 	/// <returns>a new rope</returns>
 	Rope Append(String csq, int start, int end);
+
+	/// <summary>
+	/// Returns a new rope created by appending the specified rope to it
+	/// </summary>
+	/// <param name="rope">the rope to append</param>
+	/// <returns></returns>
+	Rope Append(Rope rope);
+
+	/// <summary>
+	/// Get the characters at the given index
+	/// </summary>
+	/// <param name="index">the index to look up</param>
+	/// <returns>the character at the given index</returns>
+	char CharAt(int index);
 
 	/// <summary>
 	/// Creats a new rope by delete the specified character substring.
@@ -75,7 +90,7 @@ public interface Rope : ISerializable, IEnumerable, IComparable
 	/// </summary>
 	/// <param name="sequence">sequence to find</param>
 	/// <returns>index of the sequence if found, else -1</returns>
-	int IndexOf(String sequence);
+	int IndexOf(string sequence);
 
 	/// <summary>
 	/// Returns the index within this rope of the first occurrence of the
@@ -86,7 +101,7 @@ public interface Rope : ISerializable, IEnumerable, IComparable
 	/// <param name="sequence">sequence to find</param>
 	/// <param name="fromIndex">the index to start searching</param>
 	/// <returns>the index if found, else -1</returns>
-	int IndexOf(String sequence, int fromIndex);
+	int IndexOf(string sequence, int fromIndex);
 
 	/// <summary>
 	/// Creates a new rope by inserting the specified string into this 
@@ -100,25 +115,16 @@ public interface Rope : ISerializable, IEnumerable, IComparable
 	Rope Insert(int dstOffset, String s);
 
 	/// <summary>
-	/// Returns an IEnumerator positioned to start at the specified index.
+	/// Returns the count of characters included in this rope
 	/// </summary>
-	/// <param name="start">the start position</param>
-	/// <returns>an IEnumerator which starts at the specified index</returns>
-	IEnumerator Iterator(int start);
+	/// <returns>the count of characters</returns>
+	int Length();
 
 	/// <summary>
 	/// Trims all whitespace from the beginning of this string
 	/// </summary>
 	/// <returns>a rope with all leading whitespace trimmed</returns>
 	Rope TrimStart();
-
-	/// <summary>
-	/// Returns true if this rope matches the specified regex pattern, 
-	/// otherwise false.
-	/// </summary>
-	/// <param name="regex">the regular expression</param>
-	/// <returns>true if this rope matches the pattern, otherwise false</returns>
-	bool FMatches(String regex);
 
 	/// <summary>
 	/// Rebalances the current rope, returning the rebalance rope. In general,
@@ -133,21 +139,6 @@ public interface Rope : ISerializable, IEnumerable, IComparable
 	/// </summary>
 	/// <returns>a reversed copy of this rope</returns>
 	Rope Reverse();
-
-	/// <summary>
-	/// Returns an IEnumerator positioned to start at the end of this rope and
-	/// go toward the beginning
-	/// </summary>
-	/// <returns>a reverse enumerator</returns>
-	IEnumerator ReverseEnumerator();
-
-	/// <summary>
-	/// Returns an IEnumerator positioned to start at the specified index and move
-	/// backwards through a rope.
-	/// </summary>
-	/// <param name="start">the starting position</param>
-	/// <returns>a reverse IEnumerator</returns>
-	IEnumerator ReverseIterator(int start);
 
 	/// <summary>
 	/// Trims all whitespace from the end of this rope
@@ -212,7 +203,7 @@ public interface Rope : ISerializable, IEnumerable, IComparable
 	/// Tells whether the length of the rope is zero. 
 	/// </summary>
 	/// <returns>true if the length is zero, else false</returns>
-	bool FEmpty();
+	bool Empty();
 
 	/// <summary>
 	/// Tells whether the rope starts with the specified prefix
