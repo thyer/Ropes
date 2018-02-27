@@ -165,7 +165,7 @@ namespace Ropes.Implementations
 
 		public override IEnumerator ReverseEnumerator()
 		{
-			throw new NotImplementedException();
+			return this.sequence.Reverse().GetEnumerator();
 		}
 	}
 }

@@ -101,7 +101,18 @@ namespace Ropes.Implementations
 			return this.IndexOf(sequence, 0);
 		}
 
-		public abstract int IndexOf(char ch);
+		public virtual int IndexOf(char ch)
+		{
+			int index = -1;
+			foreach(char c in this)
+			{
+				++index;
+				if (c == ch)
+					return index;
+			}
+
+			return -1;
+		}
 
 		public virtual int IndexOf(string sequence, int fromIndex)
 		{

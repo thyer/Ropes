@@ -5,83 +5,99 @@ namespace Ropes.Implementations
 {
 	internal class ConcatenationRope : AbstractRope
 	{
-		private Rope rope1;
-		private Rope rope2;
+		private Rope left;
+		private Rope right;
+		private byte depth;
+		private int length;
 
-		public ConcatenationRope(Rope rope1, Rope rope2)
+		public ConcatenationRope(Rope left, Rope right)
 		{
-			this.rope1 = rope1;
-			this.rope2 = rope2;
+			this.left = left;
+			this.right = right;
+			this.depth = (byte) (Math.Max(RopeUtilities.INSTANCE.Depth(left), RopeUtilities.INSTANCE.Depth(right)) + 1);
+			this.length = left.Length() + right.Length();
 		}
 
 		public override char CharAt(int index)
 		{
-			throw new NotImplementedException();
+			if (index >= this.Length())
+				throw new IndexOutOfRangeException("Rope index out of range: " + index);
+
+			if(index < this.left.Length())
+			{
+				return this.left.CharAt(index);
+			}
+			else
+			{
+				return this.right.CharAt(index - this.left.Length());
+			}
 		}
 
 		public override byte Depth()
 		{
-			throw new NotImplementedException();
+			return this.Depth();
 		}
 
 		public override IEnumerator GetEnumerator()
 		{
-			throw new NotImplementedException();
+			return new ConcatenationRopeEnumerator(this);
 		}
 
 		public override int GetHashCode()
 		{
-			throw new NotImplementedException();
-		}
+			int output = 19;
+			output = output * 23 + left.GetHashCode();
+			output = output * 23 + right.GetHashCode();
+			output = output * 23 + depth;
+			output = output * 23 + length;
 
-		public override int IndexOf(char ch)
-		{
-			throw new NotImplementedException();
-		}
-
-		public override int IndexOf(char ch, int fromIndex)
-		{
-			throw new NotImplementedException();
-		}
-
-		public override int IndexOf(string sequence, int fromIndex)
-		{
-			throw new NotImplementedException();
+			return output;
 		}
 
 		public override int Length()
 		{
-			throw new NotImplementedException();
+			return this.length;
 		}
 
 		public override Rope Reverse()
 		{
-			throw new NotImplementedException();
+			return RopeUtilities.INSTANCE.Concatenate(this.GetRight().Reverse(), this.GetLeft().Reverse());
 		}
 
 		public override IEnumerator ReverseEnumerator()
 		{
-			throw new NotImplementedException();
+			return new ConcatenationRopeReverseEnumerator(this);
 		}
 
 		public override Rope SubSequence(int start, int end)
 		{
-			throw new NotImplementedException();
+			if (start < 0 || end > this.length)
+				throw new ArgumentException("Illegal subsequence (" + start + "," + end + ")");
+			if (start == 0 && end == this.length)
+				return this;
+			int l = this.left.Length();
+			if (end <= l)
+				return this.left.SubSequence(start, end);
+			if (start >= l)
+				return this.right.SubSequence(start - l, end - l);
+			return RopeUtilities.INSTANCE.Concatenate(
+				this.left.SubSequence(start, l),
+				this.right.SubSequence(0, end - l));
 		}
 
 		public override string ToString()
 		{
-			throw new NotImplementedException();
+			return left.ToString() + right.ToString();
 		}
 
 		internal Rope GetLeft()
 		{
-			throw new NotImplementedException();
+			return left;
 		}
 
 		internal Rope GetRight()
 		{
-			throw new NotImplementedException();
+			return right;
 		}
 	}
 }

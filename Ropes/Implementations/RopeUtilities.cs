@@ -112,18 +112,17 @@ namespace Ropes.Implementations
 		public Rope Rebalance(Rope r)
 		{
 			List<Rope> leafNodes = new List<Rope>();
-			LinkedList<Rope> toExamine = new LinkedList<Rope>();
+			RopeDeque toExamine = new RopeDeque();
 
 			// begin a depth first loop
-			toExamine.AddLast(r);
+			toExamine.Add(r);
 			while (toExamine.Count > 0)
 			{
-				Rope rExamine = toExamine.ElementAt(0);
-				toExamine.RemoveFirst();
+				Rope rExamine = toExamine.Pop();
 				if (rExamine is ConcatenationRope)
 				{
-					toExamine.AddLast(((ConcatenationRope)rExamine).GetRight());
-					toExamine.AddLast(((ConcatenationRope)rExamine).GetLeft());
+					toExamine.Add(((ConcatenationRope)rExamine).GetRight());
+					toExamine.Add(((ConcatenationRope)rExamine).GetLeft());
 					continue;
 				}
 				else
