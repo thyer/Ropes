@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Ropes.Implementations
 {
-	internal sealed class FlatCharArrayRope : AbstractRope
+	internal sealed class FlatCharArrayRope : AbstractRope, FlatRope
 	{
 		private readonly char[] sequence;
 
@@ -161,6 +161,11 @@ namespace Ropes.Implementations
 		public override IEnumerator GetEnumerator()
 		{
 			return this.sequence.GetEnumerator();
+		}
+
+		public override IEnumerator<char> GetEnumerator(int offset)
+		{
+			return this.sequence.Skip(offset).GetEnumerator();
 		}
 
 		public override IEnumerator ReverseEnumerator()

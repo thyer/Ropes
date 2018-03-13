@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Ropes.Implementations
 {
@@ -41,6 +42,11 @@ namespace Ropes.Implementations
 		public override IEnumerator GetEnumerator()
 		{
 			return new ConcatenationRopeEnumerator(this);
+		}
+
+		public override IEnumerator<char> GetEnumerator(int offset)
+		{
+			return new ConcatenationRopeEnumerator(this, offset);
 		}
 
 		public override int GetHashCode()

@@ -94,6 +94,8 @@ namespace Ropes.Implementations
 
 		public abstract IEnumerator GetEnumerator();
 
+		public abstract IEnumerator<char> GetEnumerator(int start);
+
 		public override abstract int GetHashCode();
 
 		public int IndexOf(string sequence)

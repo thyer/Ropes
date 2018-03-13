@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Ropes.Implementations
 {
-	internal class ConcatenationRopeEnumerator : IEnumerator
+	internal class ConcatenationRopeEnumerator : IEnumerator<char>
 	{
 		private Rope initialRope;
 		private RopeDeque toTraverse;
@@ -43,6 +44,14 @@ namespace Ropes.Implementations
 			get
 			{
 				return currentRope.CharAt(this.currentRopePos);
+			}
+		}
+
+		char IEnumerator<char>.Current
+		{
+			get
+			{
+				throw new NotImplementedException();
 			}
 		}
 
@@ -105,6 +114,11 @@ namespace Ropes.Implementations
 			this.toTraverse.Add(initialRope);
 			this.currentRope = null;
 			this.Init();
+		}
+
+		public void Dispose()
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

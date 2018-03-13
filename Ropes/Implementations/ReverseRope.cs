@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace Ropes.Implementations
@@ -24,6 +25,11 @@ namespace Ropes.Implementations
 		}
 
 		public override IEnumerator GetEnumerator()
+		{
+			throw new NotImplementedException();
+		}
+
+		public override IEnumerator<char> GetEnumerator(int offset)
 		{
 			throw new NotImplementedException();
 		}

@@ -58,6 +58,13 @@ public interface Rope : IEnumerable, IComparable, CharSequence
 	Rope Delete(int start, int end);
 
 	/// <summary>
+	/// Returns an enumerator positioned to start at the specified index
+	/// </summary>
+	/// <param name="start">the starting index</param>
+	/// <returns>An enumerator positioned to start at the specified index</returns>
+	IEnumerator<char> GetEnumerator(int start);
+
+	/// <summary>
 	/// Returns the index within this rope of the first occurrence of the
 	/// specified character. If a character with value ch occurs in the 
 	/// character sequence represented by this Rope object, then the index
