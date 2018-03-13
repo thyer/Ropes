@@ -35,7 +35,7 @@ namespace Ropes.Implementations
 
 		public override byte Depth()
 		{
-			return this.Depth();
+			return this.depth;
 		}
 
 		public override IEnumerator GetEnumerator()

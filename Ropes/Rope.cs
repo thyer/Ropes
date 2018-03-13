@@ -2,8 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using Ropes.Implementations;
+using Ropes;
 
-public interface Rope : IEnumerable, IComparable
+public interface Rope : IEnumerable, IComparable, CharSequence
 {
 	/// <summary>
 	/// Returns a new rope created by appending the specified character to this rope
@@ -42,7 +43,7 @@ public interface Rope : IEnumerable, IComparable
 	/// </summary>
 	/// <param name="index">the index to look up</param>
 	/// <returns>the character at the given index</returns>
-	char CharAt(int index);
+	new char CharAt(int index);
 
 	/// <summary>
 	/// Creats a new rope by delete the specified character substring.
@@ -118,7 +119,7 @@ public interface Rope : IEnumerable, IComparable
 	/// Returns the count of characters included in this rope
 	/// </summary>
 	/// <returns>the count of characters</returns>
-	int Length();
+	new int Length();
 
 	/// <summary>
 	/// Trims all whitespace from the beginning of this string
@@ -153,7 +154,7 @@ public interface Rope : IEnumerable, IComparable
 	/// <param name="start">the starting position</param>
 	/// <param name="end">end ending position</param>
 	/// <returns>a new rope denoting the subsequence</returns>
-	Rope SubSequence(int start, int end);
+	new Rope SubSequence(int start, int end);
 
 	/// <summary>
 	/// Trims all whitespace from the beginning and end of this rope

@@ -39,7 +39,10 @@ Thumbs.db
 # Visual Studio #
 #################
 .vs/*
-Ropes/bin/Debug/*
+Ropes/bin/*
 Ropes/obj/*
 Ropes/Properties/*
 *.csproj
+RopeTest/obj/*
+RopeTest/bin/*
+*.txt

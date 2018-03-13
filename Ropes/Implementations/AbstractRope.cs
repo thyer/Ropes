@@ -258,6 +258,12 @@ namespace Ropes.Implementations
 			return true;
 		}
 
+
+		CharSequence CharSequence.SubSequence(int start, int end)
+		{
+			return SubSequence(start, end);
+		}
+
 		public abstract Rope SubSequence(int start, int end);
 
 		public Rope Trim()
