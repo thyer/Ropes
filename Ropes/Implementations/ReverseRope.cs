@@ -7,9 +7,9 @@ namespace Ropes.Implementations
 {
 	internal class ReverseRope : AbstractRope
 	{
-		private FlatCharArrayRope flatCharArrayRope;
+		private Rope flatCharArrayRope;
 
-		public ReverseRope(FlatCharArrayRope flatCharArrayRope)
+		public ReverseRope(Rope flatCharArrayRope)
 		{
 			this.flatCharArrayRope = flatCharArrayRope;
 		}
@@ -54,7 +54,7 @@ namespace Ropes.Implementations
 			throw new NotImplementedException();
 		}
 
-		public override IEnumerator ReverseEnumerator()
+		public override IEnumerator<char> GetReverseEnumerator(int start)
 		{
 			throw new NotImplementedException();
 		}

@@ -11,7 +11,6 @@ namespace RopeTest
 		private static int seed = 342342;
 		private static Random rand = new Random(PerformanceTest.seed);
 		private static int lenCC = 159486;
-		private static int lenBF = 467196;
 
 		private const int ITERATION_COUNT = 7;
 		private const int PLAN_LENGTH = 500;
@@ -104,7 +103,7 @@ namespace RopeTest
 			Report("Insertion time for ChristmasCarol string", sw.Elapsed);
 
 			sw.Restart();
-			// ropeCC = ropeCC.Insert(ropeCC.Length() - 1, "hello!");
+			ropeCC = ropeCC.Insert(ropeCC.Length() - 1, "hello!");
 			sw.Stop();
 			Report("Insertion time for ChristmasCarol Rope", sw.Elapsed);
 		}

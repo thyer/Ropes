@@ -10,7 +10,7 @@ namespace Ropes.Implementations
 		private RopeDeque toTraverse;
 		private Rope currentRope;
 		private int currentRopePos;
-		private int skip;
+		private int initStart; // the index position where we began the enumerator
 		private int currentAbsolutePos;
 
 		public ConcatenationRopeEnumerator(ConcatenationRope concatenationRope) : this(concatenationRope, 0)
@@ -24,6 +24,7 @@ namespace Ropes.Implementations
 			this.toTraverse = new RopeDeque();
 			this.toTraverse.Add(concatenationRope);
 			this.currentRope = null;
+			this.initStart = start;
 			this.Init();
 
 			if(start < 0 || start > concatenationRope.Length())
@@ -51,7 +52,7 @@ namespace Ropes.Implementations
 		{
 			get
 			{
-				throw new NotImplementedException();
+				return currentRope.CharAt(this.currentRopePos);
 			}
 		}
 
@@ -118,7 +119,7 @@ namespace Ropes.Implementations
 
 		public void Dispose()
 		{
-			throw new NotImplementedException();
+			// nothing to dispose
 		}
 	}
 }

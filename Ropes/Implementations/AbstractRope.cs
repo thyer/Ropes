@@ -55,6 +55,10 @@ namespace Ropes.Implementations
 			{
 				return this;
 			}
+			else if(start > end)
+			{
+				throw new ArgumentException(System.String.Format("start ({0}) less than end ({1})", start.ToString(), end.ToString()));
+			}
 			return this.SubSequence(0, start).Append(this.SubSequence(end, this.Length()).ToString());
 		}
 
@@ -230,7 +234,7 @@ namespace Ropes.Implementations
 
 		public abstract Rope Reverse();
 
-		public abstract IEnumerator ReverseEnumerator();
+		public abstract IEnumerator<char> GetReverseEnumerator(int start);
 
 		public bool StartsWith(string prefix)
 		{

@@ -70,9 +70,9 @@ namespace Ropes.Implementations
 			return RopeUtilities.INSTANCE.Concatenate(this.GetRight().Reverse(), this.GetLeft().Reverse());
 		}
 
-		public override IEnumerator ReverseEnumerator()
+		public override IEnumerator<char> GetReverseEnumerator(int start)
 		{
-			return new ConcatenationRopeReverseEnumerator(this);
+			return new ConcatenationRopeReverseEnumerator(this, start);
 		}
 
 		public override Rope SubSequence(int start, int end)

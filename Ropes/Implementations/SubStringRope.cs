@@ -11,13 +11,13 @@ namespace Ropes.Implementations
 		private int offset;
 		private int length;
 
-		public SubStringRope(FlatRope flatRope, int offset, int length)
+		public SubStringRope(FlatRope rope, int offset, int length)
 		{
 			if(length < 0 || offset < 0 || offset + length > rope.Length())
 			{
 				throw new IndexOutOfRangeException("Invalid substring offset (" + offset + ") and length (" + length + ")");
 			}
-			this.rope = flatRope;
+			this.rope = rope;
 			this.offset = offset;
 			this.length = length;
 		}
@@ -54,52 +54,60 @@ namespace Ropes.Implementations
 
 		public override IEnumerator<char> GetEnumerator(int start)
 		{
-			return new SubStringEnumerator(this.GetRope().GetEnumerator(offset + start));
+			return new SubStringEnumerator(this.GetRope().GetEnumerator(offset + start), this.length);
 		}
 
 		public override int GetHashCode()
 		{
-			throw new NotImplementedException();
-		}
+			int output = 19;
+			output = 23 * output + rope.GetHashCode();
+			output = 23 * output + offset;
+			output = 23 * output + length;
 
-		public override int IndexOf(char ch)
-		{
-			throw new NotImplementedException();
+			return output;
 		}
 
 		public override int Length()
 		{
-			throw new NotImplementedException();
+			return this.length;
 		}
 
 		public override Rope Reverse()
 		{
-			throw new NotImplementedException();
+			return new ReverseRope(this);
 		}
 
-		public override IEnumerator ReverseEnumerator()
+		public override IEnumerator<char> GetReverseEnumerator(int start)
 		{
-			throw new NotImplementedException();
+			return new SubstringRopeReverseEnumerator(this.GetRope().GetReverseEnumerator(GetRope().Length() - GetOffset() - Length() + start), this.length);
 		}
 
 		public override Rope SubSequence(int start, int end)
 		{
-			throw new NotImplementedException();
+			if(start == 0 && end == this.Length())
+			{
+				return this;
+			}
+
+			return new SubStringRope(this.rope, this.offset + start, end - start);
 		}
 
 		public override string ToString()
 		{
-			throw new NotImplementedException();
+			return this.rope.ToString(this.offset, this.length);
 		}
 
 		internal class SubStringEnumerator : IEnumerator<char>
 		{
 			private IEnumerator<char> enumerator;
 			private int length;
+			private int cSteps;
 
 			internal  SubStringEnumerator(IEnumerator<char> enumerator, int length)
 			{
 				this.enumerator = enumerator;
+				this.length = length;
+				this.cSteps = 0;
 			}
 
 			public char Current
@@ -120,17 +128,73 @@ namespace Ropes.Implementations
 
 			public void Dispose()
 			{
-				throw new NotImplementedException();
+				enumerator.Dispose();
 			}
 
 			public bool MoveNext()
 			{
-				throw new NotImplementedException();
+				if(cSteps < length)
+				{
+					cSteps++;
+					return enumerator.MoveNext();
+				}
+				return false;
 			}
 
 			public void Reset()
 			{
-				throw new NotImplementedException();
+				cSteps = 0;
+				enumerator.Reset();
+			}
+		}
+
+		internal class SubstringRopeReverseEnumerator : IEnumerator<char>
+		{
+			private IEnumerator<char> enumerator;
+			private int cSteps;
+			private int length;
+
+			public SubstringRopeReverseEnumerator(IEnumerator<char> enumerator, int length)
+			{
+				this.enumerator = enumerator;
+				this.length = length;
+				this.cSteps = 0;
+			}
+
+			public char Current
+			{
+				get
+				{
+					return enumerator.Current;
+				}
+			}
+
+			object IEnumerator.Current
+			{
+				get
+				{
+					return enumerator.Current;
+				}
+			}
+
+			public void Dispose()
+			{
+				enumerator.Dispose();
+			}
+
+			public bool MoveNext()
+			{
+				if(cSteps < length)
+				{
+					cSteps++;
+					return enumerator.MoveNext();
+				}
+				return false;
+			}
+
+			public void Reset()
+			{
+				enumerator.Reset();
 			}
 		}
 	}

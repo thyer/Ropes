@@ -168,7 +168,7 @@ namespace Ropes.Implementations
 			return this.sequence.Skip(offset).GetEnumerator();
 		}
 
-		public override IEnumerator ReverseEnumerator()
+		public override IEnumerator<char> GetReverseEnumerator(int start)
 		{
 			return this.sequence.Reverse().GetEnumerator();
 		}

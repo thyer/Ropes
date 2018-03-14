@@ -47,10 +47,11 @@ public interface Rope : IEnumerable, IComparable, CharSequence
 
 	/// <summary>
 	/// Creats a new rope by delete the specified character substring.
-	/// The substring begins at the specified<code>start</code> and extends to
-	/// the character at index <code>end - 1</code> or to the end of the
+	/// The substring begins at the specified start and extends to
+	/// the character at index end or to the end of the
 	/// sequence if no such character exists. If
-	/// start is equal to end, no changes are made.
+	/// start is equal to end, no changes are made. Throws an exception
+	/// if start > end
 	/// </summary>
 	/// <param name="start">the beginning index, inclusive</param>
 	/// <param name="end">the ending index, inclusive</param>
@@ -63,6 +64,15 @@ public interface Rope : IEnumerable, IComparable, CharSequence
 	/// <param name="start">the starting index</param>
 	/// <returns>An enumerator positioned to start at the specified index</returns>
 	IEnumerator<char> GetEnumerator(int start);
+
+	/// <summary>
+	/// Returns an enumerator positioned to start from the specified index
+	/// and move backward through the Rope
+	/// </summary>
+	/// <param name="start">the starting index</param>
+	/// <returns>An enumerator positioned to start at the specified index 
+	/// and move backward</returns>
+	IEnumerator<char> GetReverseEnumerator(int start);
 
 	/// <summary>
 	/// Returns the index within this rope of the first occurrence of the
@@ -156,7 +166,7 @@ public interface Rope : IEnumerable, IComparable, CharSequence
 
 	/// <summary>
 	/// Returns a new rope denoting the subsequence from position start to 
-	/// position end.
+	/// position end (exclusive)
 	/// </summary>
 	/// <param name="start">the starting position</param>
 	/// <param name="end">end ending position</param>
