@@ -39,6 +39,11 @@ namespace Ropes.Implementations
 		{
 			return (this.currentRopePos - amount) >= -1;
 		}
+		
+		public bool CanMoveForward(int amount)
+		{
+			return this.currentRopePos < this.currentRope.Length() - 1 || this.toTraverse.Empty();
+		}
 
 		public object Current
 		{
@@ -77,8 +82,8 @@ namespace Ropes.Implementations
 				if (this.currentRope == null)
 					throw new ArgumentNullException("No terminal ropes present");
 
-				this.currentRopePos = -1;
-				this.currentAbsolutePos = -1;
+				this.currentRopePos = 0;
+				this.currentAbsolutePos = 0;
 			}
 		}
 
@@ -89,7 +94,43 @@ namespace Ropes.Implementations
 
 		public bool MoveNext(int amount)
 		{
-			throw new NotImplementedException();
+			if (!CanMoveForward(amount))
+			{
+				return false;
+			}
+			this.currentAbsolutePos += amount;
+			int remainingAmt = amount;
+			while (remainingAmt != 0)
+			{
+				int available = this.currentRope.Length() - this.currentRopePos - 1;
+				if (remainingAmt <= available)
+				{
+					this.currentRopePos += remainingAmt;
+					return true;
+				}
+				remainingAmt -= available;
+				if (this.toTraverse.Empty())
+				{
+					this.currentAbsolutePos -= remainingAmt;
+					throw new ArgumentOutOfRangeException("Unable to move forward " + amount + ". Reached end of rope.");
+				}
+
+				while (!this.toTraverse.Empty())
+				{
+					this.currentRope = this.toTraverse.Pop();
+					if (this.currentRope is ConcatenationRope)
+					{
+						this.toTraverse.Add(((ConcatenationRope)this.currentRope).GetRight());
+						this.toTraverse.Add(((ConcatenationRope)this.currentRope).GetLeft());
+					}
+					else
+					{
+						this.currentRopePos -= 1;
+						break;
+					}
+				}
+			}
+			return true;
 		}
 
 		public bool MovePrev()

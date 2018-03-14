@@ -255,7 +255,7 @@ namespace Ropes.Implementations
 			int x = 0;
 			foreach (char c in this)
 			{
-				if (c != prefix[x])
+				if (x >= prefix.Length || c != prefix[x])
 					return false;
 
 				x++;
