@@ -11,7 +11,7 @@ namespace RopeTest
 	[TestClass]
 	public class RandomizedTest
 	{
-		private static int seed = 342342;
+		private static int seed = 3141592;
 		private static Random rand = new Random(RandomizedTest.seed);
 		private static int lenCC = 159486;
 		private static StreamWriter log = new StreamWriter("log.txt");
@@ -70,17 +70,18 @@ namespace RopeTest
 		[TestMethod]
 		public void RandomActionsCompareToString()
 		{
-			// Performs 50 random actions on both a string and a rope, comparing the two after each action
+			// Performs 500 random actions on both a string and a rope, comparing the two after each action
 			char[] output = ReadChristmasCarol();
 			Rope ropeCC = RopeBuilder.BUILD(output);
 			string strCC = new string(output);
 
-			for (int i = 0; i < 50; ++i)
+			for (int i = 0; i < 5000; ++i)
 			{
 				// useful values for random access
 				int length = ropeCC.Length();
 				int start = rand.Next(length / 2);
 				int end = Math.Max(start + 1, length - rand.Next(length / 3));
+				end = Math.Min(end, length);
 
 				Array values = Enum.GetValues(typeof(Action));
 				switch ((Action)values.GetValue(rand.Next(values.Length)))
@@ -104,7 +105,7 @@ namespace RopeTest
 						int fromIndex = rand.Next(ropeCC.Length() / 4);
 						// take a random sequence from the string
 						int iStart = fromIndex + rand.Next((ropeCC.Length() - fromIndex) / 2);
-						string randSubstring = strCC.Substring(iStart, rand.Next(5));
+						string randSubstring = strCC.Substring(iStart, Math.Min(rand.Next(5), strCC.Length));
 						Assert.AreEqual(strCC.IndexOf(randSubstring, fromIndex), ropeCC.IndexOf(randSubstring, fromIndex));
 						break;
 					case Action.Insert:

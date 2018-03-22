@@ -247,11 +247,15 @@ namespace Ropes.Implementations
 
 		public bool StartsWith(string prefix, int offset)
 		{
-			if (offset < 0 || offset > this.Length())
+			if(this.Length() == 0 || prefix.Length > this.Length())
+			{
+				return false;
+			}
+			else if (offset < 0 || offset > this.Length())
 			{
 				throw new IndexOutOfRangeException("Index out of range: " + offset);
 			}
-			else if (offset + prefix.Length > this.Length())
+			if (offset + prefix.Length > this.Length())
 			{
 				return false;
 			}

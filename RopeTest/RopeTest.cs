@@ -127,5 +127,18 @@ namespace RopeTest
 				Assert.IsTrue(enumerator.Current != null);
 			}
 		}
+
+		[TestMethod]
+		public void TestIndexOfAcrossConcatenateRopes()
+		{
+			Rope r = RopeBuilder.BUILD("aaaaaaaaaaaaaaaa12");
+			r = r.Append("3456789aaaaaa");
+			r = r.SubSequence(1, r.Length());
+			Assert.AreEqual(r.IndexOf("123456789", 3), 15);
+
+			r = RopeBuilder.BUILD("aaaaaaaaaaaa1111");
+			r = r.Append("1bbbbbbbbbbbbbbbb");
+			Assert.AreEqual(r.IndexOf("1111", 3), 12);
+		}
 	}
 }
