@@ -98,7 +98,7 @@ namespace Ropes.Implementations
 
 		public abstract IEnumerator GetEnumerator();
 
-		public abstract IEnumerator<char> GetEnumerator(int start);
+		public abstract IEnumerator<char> GetEnumerator(int offset);
 
 		public override abstract int GetHashCode();
 
@@ -257,9 +257,11 @@ namespace Ropes.Implementations
 			}
 
 			int x = 0;
-			foreach (char c in this)
+			for(IEnumerator<char> enumerator = this.GetEnumerator(offset); enumerator.MoveNext(); )
 			{
-				if (x >= prefix.Length || c != prefix[x])
+				if (x >= prefix.Length)
+					break;
+				if (enumerator.Current != prefix[x])
 					return false;
 
 				x++;

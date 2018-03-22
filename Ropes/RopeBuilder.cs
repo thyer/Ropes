@@ -1,4 +1,5 @@
-﻿using Ropes.Implementations;
+﻿using Ropes;
+using Ropes.Implementations;
 using System;
 
 public sealed class RopeBuilder
@@ -24,8 +25,8 @@ public sealed class RopeBuilder
 		return new FlatCharArrayRope(sequence);
 	}
 
-	internal static Rope BUILD(RepeatedCharacterSequence repeatedCharacterSequence)
+	static public Rope BUILD(CharSequence sequence)
 	{
-		throw new NotImplementedException();
+		return new FlatCharSequenceRope(sequence);
 	}
 }

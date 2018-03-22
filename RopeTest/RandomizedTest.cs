@@ -77,6 +77,11 @@ namespace RopeTest
 
 			for (int i = 0; i < 50; ++i)
 			{
+				// useful values for random access
+				int length = ropeCC.Length();
+				int start = rand.Next(length / 2);
+				int end = Math.Max(start + 1, length - rand.Next(length / 3));
+
 				Array values = Enum.GetValues(typeof(Action));
 				switch ((Action)values.GetValue(rand.Next(values.Length)))
 				{
@@ -86,14 +91,11 @@ namespace RopeTest
 						strCC = strCC + randomAppend;
 						break;
 					case Action.Delete:
-						int length = ropeCC.Length();
-						int start = rand.Next(length / 2);
-						int end = Math.Max(start + 1, length - rand.Next(length / 3));
 						ropeCC = ropeCC.Delete(start, end);
 						strCC = strCC.Remove(start, end - start);
 						break;
 					case Action.Enumerate:
-						//Enumerate(ropeCC);
+						Enumerate(ropeCC);
 						break;
 					case Action.Reverse:
 						//ropeCC = Reverse(ropeCC);
@@ -116,15 +118,24 @@ namespace RopeTest
 						//ropeCC = Trim(ropeCC);
 						break;
 					case Action.Subsequence:
-						//ropeCC = SubsequenceRandom(ropeCC);
+						ropeCC = Subsequence(ropeCC, start, end);
+						strCC = strCC.Substring(start, end - start);
 						break;
 					case Action.PadStart:
 					case Action.PadEnd:
-						//ropeCC = PadRandom(ropeCC);
+						ropeCC = ropeCC.PadStart(length + 5, ' ');
+						strCC = strCC.PadLeft(length + 5, ' ');
 						break;
 					case Action.StartsWith:
 					case Action.EndsWith:
-						//StartsEndsWith(ropeCC);
+						Assert.AreEqual(ropeCC.StartsWith("a"), strCC.StartsWith("a"));
+						Assert.AreEqual(ropeCC.StartsWith("e"), strCC.StartsWith("e"));
+						Assert.AreEqual(ropeCC.EndsWith("a"), strCC.EndsWith("a"));
+						Assert.AreEqual(ropeCC.EndsWith("e"), strCC.EndsWith("e"));
+						Assert.AreEqual(ropeCC.StartsWith("he"), strCC.StartsWith("he"));
+						Assert.AreEqual(ropeCC.StartsWith("the"), strCC.StartsWith("the"));
+						Assert.AreEqual(ropeCC.EndsWith("he"), strCC.EndsWith("he"));
+						Assert.AreEqual(ropeCC.EndsWith("m."), strCC.EndsWith("m."));
 						break;
 
 				}
