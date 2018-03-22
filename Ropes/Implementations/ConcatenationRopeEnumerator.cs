@@ -71,9 +71,10 @@ namespace Ropes.Implementations
 			while (!this.toTraverse.Empty())
 			{
 				this.currentRope = this.toTraverse.Pop();
-				if(this.currentRope is ConcatenationRope){
-					this.toTraverse.Add(((ConcatenationRope)this.currentRope).GetRight());
+				if(this.currentRope is ConcatenationRope)
+				{
 					this.toTraverse.Add(((ConcatenationRope)this.currentRope).GetLeft());
+					this.toTraverse.Add(((ConcatenationRope)this.currentRope).GetRight());
 				}
 				else
 				{
@@ -82,14 +83,14 @@ namespace Ropes.Implementations
 				if (this.currentRope == null)
 					throw new ArgumentNullException("No terminal ropes present");
 
-				this.currentRopePos = 0;
-				this.currentAbsolutePos = 0;
+				this.currentRopePos = -1;
+				this.currentAbsolutePos = -1;
 			}
 		}
 
 		public bool MoveNext()
 		{
-			return MoveNext(0);
+			return MoveNext(1);
 		}
 
 		public bool MoveNext(int amount)

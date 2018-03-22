@@ -17,9 +17,9 @@ namespace RopeTest
 		private static StreamWriter log = new StreamWriter("log.txt");
 
 		[TestMethod]
-		public void TestMethod1()
+		public void Random100Actions()
 		{
-			// Reads in A Christmas Carol and randomly performs 100 actions on that string
+			// Reads in A Christmas Carol and randomly performs 100 actions on that rope
 			char[] output = ReadChristmasCarol();
 			Rope ropeCC = RopeBuilder.BUILD(output);
 
@@ -29,10 +29,10 @@ namespace RopeTest
 				switch ((Action) values.GetValue(rand.Next(values.Length)))
 				{
 					case Action.Append:
-						ropeCC = Append(ropeCC);
+						ropeCC = AppendRandom(ropeCC);
 						break;
 					case Action.Delete:
-						ropeCC = Delete(ropeCC);
+						ropeCC = DeleteRandom(ropeCC);
 						break;
 					case Action.Enumerate:
 						Enumerate(ropeCC);
@@ -41,27 +41,89 @@ namespace RopeTest
 						ropeCC = Reverse(ropeCC);
 						break;
 					case Action.IndexOf:
-						IndexOf(ropeCC);
+						IndexOfRandom(ropeCC);
 						break;
 					case Action.Insert:
-						ropeCC = Insert(ropeCC);
+						ropeCC = InsertRandom(ropeCC);
 						break;
 					case Action.TrimStart:
 					case Action.TrimEnd:
 						ropeCC = Trim(ropeCC);
 						break;
 					case Action.Subsequence:
-						ropeCC = Subsequence(ropeCC);
+						ropeCC = SubsequenceRandom(ropeCC);
 						break;
 					case Action.PadStart:
 					case Action.PadEnd:
-						ropeCC = Pad(ropeCC);
+						ropeCC = PadRandom(ropeCC);
 						break;
 					case Action.StartsWith:
 					case Action.EndsWith:
 						StartsEndsWith(ropeCC);
 						break;
 
+				}
+			}
+			log.Flush();
+		}
+
+		[TestMethod]
+		public void RandomActionsCompareToString()
+		{
+			// Performs 10 random actions on both a string and a rope, comparing the two after each action
+			char[] output = ReadChristmasCarol();
+			Rope ropeCC = RopeBuilder.BUILD(output);
+			string strCC = new string(output);
+
+			for (int i = 0; i < 10; ++i)
+			{
+				Array values = Enum.GetValues(typeof(Action));
+				switch ((Action)values.GetValue(rand.Next(values.Length)))
+				{
+					case Action.Append:
+						string randomAppend = GetRandomString();
+						ropeCC = Append(ropeCC, randomAppend);
+						strCC = strCC + randomAppend;
+						break;
+					case Action.Delete:
+						//ropeCC = DeleteRandom(ropeCC);
+						break;
+					case Action.Enumerate:
+						//Enumerate(ropeCC);
+						break;
+					case Action.Reverse:
+						//ropeCC = Reverse(ropeCC);
+						break;
+					case Action.IndexOf:
+						//IndexOfRandom(ropeCC);
+						break;
+					case Action.Insert:
+						//ropeCC = InsertRandom(ropeCC);
+						break;
+					case Action.TrimStart:
+					case Action.TrimEnd:
+						//ropeCC = Trim(ropeCC);
+						break;
+					case Action.Subsequence:
+						//ropeCC = SubsequenceRandom(ropeCC);
+						break;
+					case Action.PadStart:
+					case Action.PadEnd:
+						//ropeCC = PadRandom(ropeCC);
+						break;
+					case Action.StartsWith:
+					case Action.EndsWith:
+						//StartsEndsWith(ropeCC);
+						break;
+
+				}
+
+				Assert.AreEqual(strCC.Length, ropeCC.Length());
+				int j = 0;
+				foreach(char c in ropeCC)
+				{
+					Assert.AreEqual(c, strCC[j]);
+					j++;
 				}
 			}
 			log.Flush();
@@ -74,20 +136,31 @@ namespace RopeTest
 			log.WriteLine("Ends with a? " + ropeCC.EndsWith("a"));
 		}
 
-		private Rope Pad(Rope ropeCC)
+		private Rope Pad(Rope ropeCC, int cPadStart, int cPadEnd)
 		{
 			log.WriteLine(GetCurrentMethod());
-			return ropeCC.PadStart(rand.Next(5)).PadEnd(rand.Next(5));
+			return ropeCC.PadStart(cPadStart).PadEnd(cPadEnd);
 		}
 
-		private Rope Subsequence(Rope ropeCC)
+		private Rope PadRandom(Rope ropeCC)
+		{
+			return Pad(ropeCC, rand.Next(5), rand.Next(5));
+		}
+
+		private Rope Subsequence(Rope ropeCC, int start, int end)
 		{
 			log.WriteLine(GetCurrentMethod());
+			log.WriteLine(String.Format("Start:{0}, End:{1}",  start, end));
+			return ropeCC.SubSequence(start, end);
+		}
+
+		private Rope SubsequenceRandom(Rope ropeCC)
+		{
 			int length = ropeCC.Length();
 			int start = rand.Next(length / 2);
 			int end = Math.Max(start + 1, length - rand.Next(length / 3));
 			log.WriteLine(String.Format("Length:{0}, Start:{1}, End:{2}", length, start, end));
-			return ropeCC.SubSequence(start, end);
+			return Subsequence(ropeCC, start, end);
 		}
 
 		private Rope Trim(Rope ropeCC)
@@ -96,27 +169,42 @@ namespace RopeTest
 			return ropeCC.Trim();
 		}
 
-		private Rope Insert(Rope ropeCC)
+		private Rope Insert(Rope ropeCC, int dstOffset, string strToInsert)
 		{
 			log.WriteLine(GetCurrentMethod());
-			int length = ropeCC.Length();
-			int dstOffset = rand.Next(length - 1);
-			log.WriteLine(String.Format("Length:{0}, dstOffset:{1}", length, dstOffset));
-			return ropeCC.Insert(dstOffset, GetRandomString());
+			log.WriteLine(String.Format("Length:{0}, dstOffset:{1}", dstOffset));
+			return ropeCC.Insert(dstOffset, strToInsert);
 		}
 
-		private void IndexOf(Rope ropeCC)
+		private Rope InsertRandom(Rope ropeCC)
+		{
+			int length = ropeCC.Length();
+			int dstOffset = rand.Next(length - 1);
+			return Insert(ropeCC, dstOffset, GetRandomString());
+		}
+
+		private int IndexOf(Rope ropeCC, char c, int fromIndex)
 		{
 			log.WriteLine(GetCurrentMethod());
+			return ropeCC.IndexOf(c, fromIndex);
+		}
 
+		private int IndexOf(Rope ropeCC, string str, int fromIndex)
+		{
+			log.WriteLine(GetCurrentMethod());
+			return ropeCC.IndexOf(str, fromIndex);
+		}
+
+		private void IndexOfRandom(Rope ropeCC)
+		{
 			int fromIndex = rand.Next(ropeCC.Length() / 4);
 			if (rand.Next() % 2 == 0) // char
 			{
-				log.WriteLine(String.Format("Index of next \'e\' from index {0}: {1}", fromIndex, ropeCC.IndexOf('e', fromIndex)));
+				log.WriteLine(String.Format("Index of next \'e\' from index {0}: {1}", fromIndex, IndexOf(ropeCC, 'e', fromIndex)));
 			}
 			else // string
 			{
-				log.WriteLine(String.Format("Index of next occurrence of \"you\" from index {0}: {1}", fromIndex, ropeCC.IndexOf("you", fromIndex)));
+				log.WriteLine(String.Format("Index of next occurrence of \"you\" from index {0}: {1}", fromIndex, IndexOf(ropeCC, "you", fromIndex)));
 			}
 		}
 
@@ -141,7 +229,14 @@ namespace RopeTest
 			log.WriteLine("Counted all \'h\'s in the text and found: " + cH);
 		}
 
-		private Rope Delete(Rope ropeCC)
+		private Rope Delete(Rope ropeCC, int start, int end)
+		{
+			log.WriteLine(GetCurrentMethod());
+			log.WriteLine(String.Format("Start:{0}, End:{1}", start, end));
+			return ropeCC.Delete(start, end);
+		}
+
+		private Rope DeleteRandom(Rope ropeCC)
 		{
 			log.WriteLine(GetCurrentMethod());
 
@@ -149,18 +244,35 @@ namespace RopeTest
 			int start = rand.Next(length / 2);
 			int end = Math.Max(start + 1, length - rand.Next(length / 3));
 			log.WriteLine(String.Format("Length:{0}, Start:{1}, End:{2}", length, start, end));
-			return ropeCC;
+			return Delete(ropeCC, start, end);
 		}
 
-		private Rope Append(Rope ropeCC)
+		private Rope Append(Rope ropeCC, Rope ropeAppend)
+		{
+			log.WriteLine(GetCurrentMethod());
+			log.WriteLine(String.Format("Appending rope with string: {0}", ropeAppend.ToString()));
+			return ropeCC.Append(ropeAppend);
+		}
+
+		private Rope Append(Rope ropeCC, string strAppend)
+		{
+			log.WriteLine(GetCurrentMethod());
+			log.WriteLine(String.Format("Appending string: {0}", strAppend));
+			return ropeCC.Append(strAppend);
+		}
+
+		private Rope AppendRandom(Rope ropeCC)
 		{
 			log.WriteLine(GetCurrentMethod());
 
 			if(rand.Next() % 2 == 0) // append a new rope
 			{
-				return ropeCC.Append(RopeBuilder.BUILD(GetRandomString()));
+				log.WriteLine(String.Format("Appending random rope"));
+				return Append(ropeCC, RopeBuilder.BUILD(GetRandomString()));
 			}
-			return ropeCC.Append(GetRandomString());
+
+			log.WriteLine(String.Format("Appending random string"));
+			return Append(ropeCC, GetRandomString());
 		}
 
 		[MethodImpl(MethodImplOptions.NoInlining)]
