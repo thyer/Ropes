@@ -42,7 +42,7 @@ namespace Ropes.Implementations
 		
 		public bool CanMoveForward(int amount)
 		{
-			return this.currentRopePos < this.currentRope.Length() - 1 || this.toTraverse.Empty();
+			return this.currentRopePos < this.currentRope.Length() + this.toTraverse.LengthTotalInDeque() - amount;
 		}
 
 		public object Current
@@ -73,8 +73,8 @@ namespace Ropes.Implementations
 				this.currentRope = this.toTraverse.Pop();
 				if(this.currentRope is ConcatenationRope)
 				{
-					this.toTraverse.Add(((ConcatenationRope)this.currentRope).GetLeft());
-					this.toTraverse.Add(((ConcatenationRope)this.currentRope).GetRight());
+					this.toTraverse.Push(((ConcatenationRope)this.currentRope).GetRight());
+					this.toTraverse.Push(((ConcatenationRope)this.currentRope).GetLeft());
 				}
 				else
 				{
@@ -121,12 +121,12 @@ namespace Ropes.Implementations
 					this.currentRope = this.toTraverse.Pop();
 					if (this.currentRope is ConcatenationRope)
 					{
-						this.toTraverse.Add(((ConcatenationRope)this.currentRope).GetRight());
-						this.toTraverse.Add(((ConcatenationRope)this.currentRope).GetLeft());
+						this.toTraverse.Push(((ConcatenationRope)this.currentRope).GetRight());
+						this.toTraverse.Push(((ConcatenationRope)this.currentRope).GetLeft());
 					}
 					else
 					{
-						this.currentRopePos -= 1;
+						this.currentRopePos = -1;
 						break;
 					}
 				}

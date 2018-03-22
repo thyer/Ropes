@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections;
 
 namespace RopeTest
 {
@@ -53,7 +54,7 @@ namespace RopeTest
 			Rope ropeTest = RopeBuilder.BUILD(strTest);
 			Compare(ropeTest, strTest);
 
-			ropeTest = ropeTest.Insert(6, "under");
+			ropeTest = ropeTest.Insert(7, "under");
 			strTest = "Hello, underworld!";
 			Compare(ropeTest, strTest);
 
@@ -107,6 +108,23 @@ namespace RopeTest
 			foreach(char c in r){
 				Assert.AreEqual("1234567890"[j], c);
 				++j;
+			}
+		}
+
+		[TestMethod]
+		public void TestIEnumerator()
+		{
+			Rope r = RopeBuilder.BUILD("01234aaa56789");
+			r = r.Insert(4, "0000001123456");
+			r = r.Insert(3, "hello, stranger");
+			r = r.Delete(4, 10);
+			r = r.Insert(0, "      ");
+			r = r.SubSequence(3, 17);
+
+			IEnumerator enumerator = r.GetEnumerator();
+			while (enumerator.MoveNext())
+			{
+				Assert.IsTrue(enumerator.Current != null);
 			}
 		}
 	}

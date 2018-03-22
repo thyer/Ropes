@@ -127,7 +127,7 @@ namespace Ropes.Implementations
 			// Basic case
 			int length = sequence.Length;
 			if (length == 0)
-				return -1;
+				return fromIndex;
 			else if (length == 1)
 				return this.IndexOf(sequence[0], fromIndex);
 
