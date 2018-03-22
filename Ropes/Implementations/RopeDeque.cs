@@ -30,6 +30,11 @@ namespace Ropes.Implementations
 			internalList.AddLast(r);
 		}
 
+		internal void Push(Rope r)
+		{
+			internalList.AddFirst(r);
+		}
+
 		internal Rope Pop()
 		{
 			Rope output = internalList.ElementAt(0);
@@ -40,6 +45,17 @@ namespace Ropes.Implementations
 		internal bool Empty()
 		{
 			return internalList.Count == 0;
+		}
+
+		internal int LengthTotalInDeque()
+		{
+			int output = 0;
+			foreach(Rope r in internalList)
+			{
+				output += r.Length();
+			}
+
+			return output;
 		}
 	}
 }

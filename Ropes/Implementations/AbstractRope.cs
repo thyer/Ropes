@@ -132,6 +132,10 @@ namespace Ropes.Implementations
 				return this.IndexOf(sequence[0], fromIndex);
 
 			int[] bcs = new int[256]; // bad character shift
+			for (int i = 0; i < bcs.Length; ++i)
+			{
+				bcs[i] = length;
+			}
 
 			// Preprocess the sequence text
 			for (int i = 0; i < length - 1; ++i)

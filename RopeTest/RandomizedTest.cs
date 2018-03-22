@@ -70,12 +70,12 @@ namespace RopeTest
 		[TestMethod]
 		public void RandomActionsCompareToString()
 		{
-			// Performs 10 random actions on both a string and a rope, comparing the two after each action
+			// Performs 50 random actions on both a string and a rope, comparing the two after each action
 			char[] output = ReadChristmasCarol();
 			Rope ropeCC = RopeBuilder.BUILD(output);
 			string strCC = new string(output);
 
-			for (int i = 0; i < 10; ++i)
+			for (int i = 0; i < 50; ++i)
 			{
 				Array values = Enum.GetValues(typeof(Action));
 				switch ((Action)values.GetValue(rand.Next(values.Length)))
@@ -86,7 +86,11 @@ namespace RopeTest
 						strCC = strCC + randomAppend;
 						break;
 					case Action.Delete:
-						//ropeCC = DeleteRandom(ropeCC);
+						int length = ropeCC.Length();
+						int start = rand.Next(length / 2);
+						int end = Math.Max(start + 1, length - rand.Next(length / 3));
+						ropeCC = ropeCC.Delete(start, end);
+						strCC = strCC.Remove(start, end - start);
 						break;
 					case Action.Enumerate:
 						//Enumerate(ropeCC);
@@ -95,10 +99,17 @@ namespace RopeTest
 						//ropeCC = Reverse(ropeCC);
 						break;
 					case Action.IndexOf:
-						//IndexOfRandom(ropeCC);
+						int fromIndex = rand.Next(ropeCC.Length() / 4);
+						// take a random sequence from the string
+						int iStart = fromIndex + rand.Next((ropeCC.Length() - fromIndex) / 2);
+						string randSubstring = strCC.Substring(iStart, rand.Next(5));
+						Assert.AreEqual(strCC.IndexOf(randSubstring, fromIndex), ropeCC.IndexOf(randSubstring, fromIndex));
 						break;
 					case Action.Insert:
-						//ropeCC = InsertRandom(ropeCC);
+						int iOffset = rand.Next(strCC.Length / 2);
+						string strToInsert = GetRandomString();
+						ropeCC = Insert(ropeCC, iOffset, strToInsert);
+						strCC = strCC.Substring(0, iOffset) + strToInsert + strCC.Substring(iOffset);
 						break;
 					case Action.TrimStart:
 					case Action.TrimEnd:
@@ -118,6 +129,7 @@ namespace RopeTest
 
 				}
 
+				log.Flush();
 				Assert.AreEqual(strCC.Length, ropeCC.Length());
 				int j = 0;
 				foreach(char c in ropeCC)
@@ -172,7 +184,7 @@ namespace RopeTest
 		private Rope Insert(Rope ropeCC, int dstOffset, string strToInsert)
 		{
 			log.WriteLine(GetCurrentMethod());
-			log.WriteLine(String.Format("Length:{0}, dstOffset:{1}", dstOffset));
+			log.WriteLine(String.Format("dstOffset:{0}, string:{1}", dstOffset, strToInsert));
 			return ropeCC.Insert(dstOffset, strToInsert);
 		}
 
@@ -291,7 +303,7 @@ namespace RopeTest
 		private string GetRandomString()
 		{
 			const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-			return new string(Enumerable.Repeat(chars, rand.Next(10))
+			return new string(Enumerable.Repeat(chars, rand.Next(1, 10))
 			  .Select(s => s[rand.Next(s.Length)]).ToArray());
 		}
 

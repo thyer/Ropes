@@ -47,6 +47,46 @@ namespace RopeTest
 		}
 
 		[TestMethod]
+		public void TestIndexOf()
+		{
+			string strTest = "Hello, world!";
+			Rope ropeTest = RopeBuilder.BUILD(strTest);
+			Compare(ropeTest, strTest);
+
+			ropeTest = ropeTest.Insert(6, "under");
+			strTest = "Hello, underworld!";
+			Compare(ropeTest, strTest);
+
+			ropeTest = ropeTest.SubSequence(1, ropeTest.Length());
+			strTest = "ello, underworld!";
+			Compare(ropeTest, strTest);
+
+			ropeTest = ropeTest.Append("123456789");
+			strTest = strTest + "123456789";
+			Compare(ropeTest, strTest);
+
+			ropeTest = ropeTest.Append("123456789");
+			strTest = strTest + "123456789";
+			Compare(ropeTest, strTest);
+		}
+
+		private void Compare(Rope ropeTest, string strTest)
+		{
+			Assert.AreEqual(strTest.IndexOf("H"), ropeTest.IndexOf("H"));
+			Assert.AreEqual(strTest.IndexOf('H'), ropeTest.IndexOf('H'));
+			Assert.AreEqual(strTest.IndexOf("Hello, world"), ropeTest.IndexOf("Hello, world"));
+			Assert.AreEqual(strTest.IndexOf("Hello, world!"), ropeTest.IndexOf("Hello, world!"));
+			Assert.AreEqual(strTest.IndexOf("el"), ropeTest.IndexOf("el"));
+			Assert.AreEqual(strTest.IndexOf("l"), ropeTest.IndexOf("l"));
+			Assert.AreEqual(strTest.IndexOf('1'), ropeTest.IndexOf('1'));
+			Assert.AreEqual(strTest.IndexOf("ld!"), ropeTest.IndexOf("ld!"));
+			Assert.AreEqual(strTest.IndexOf("x"), ropeTest.IndexOf("x"));
+			Assert.AreEqual(strTest.IndexOf('x'), ropeTest.IndexOf('x'));
+			Assert.AreEqual(strTest.IndexOf("hello, world"), ropeTest.IndexOf("hello, world"));
+			Assert.AreEqual(strTest.IndexOf("ld! "), ropeTest.IndexOf("ld! "));
+		}
+
+		[TestMethod]
 		public void TestIterator()
 		{
 			Rope r = RopeBuilder.BUILD("01234aaa56789");
