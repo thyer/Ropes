@@ -122,7 +122,7 @@ namespace Ropes.Implementations
 
 		public virtual int IndexOf(string sequence, int fromIndex)
 		{
-			// Implementation of Boyer-Moore-Horspool algorith with special unicode support
+			// Implementation of Boyer-Moore-Horspool algorithm with special unicode support
 
 			// Basic case
 			int length = sequence.Length;
@@ -154,7 +154,7 @@ namespace Ropes.Implementations
 				{
 					if (sequence[y] != this.CharAt(x))
 					{
-						i += bcs[(this.CharAt(x) & 0xFF)];
+						i += bcs[(this.CharAt(i) & 0xFF)];
 						break;
 					}
 					if (y == 0)

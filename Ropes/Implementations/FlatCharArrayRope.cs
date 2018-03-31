@@ -116,7 +116,7 @@ namespace Ropes.Implementations
 				{
 					if (sequence[y] != this.sequence[x])
 					{
-						i += bcs[(this.sequence[x] & 0xFF)];
+						i += bcs[(this.sequence[i] & 0xFF)];
 						break;
 					}
 					if (y == 0)

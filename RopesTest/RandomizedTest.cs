@@ -105,7 +105,8 @@ namespace RopeTest
 						int fromIndex = rand.Next(ropeCC.Length() / 4);
 						// take a random sequence from the string
 						int iStart = fromIndex + rand.Next((ropeCC.Length() - fromIndex) / 2);
-						string randSubstring = strCC.Substring(iStart, Math.Min(rand.Next(5), strCC.Length));
+						int randLength = Math.Min(rand.Next(5), strCC.Length - iStart);
+						string randSubstring = strCC.Substring(iStart, randLength);
 						Assert.AreEqual(strCC.IndexOf(randSubstring, fromIndex), ropeCC.IndexOf(randSubstring, fromIndex));
 						break;
 					case Action.Insert:
