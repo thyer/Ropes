@@ -41,8 +41,10 @@ Thumbs.db
 .vs/*
 Ropes/bin/*
 Ropes/obj/*
+obj/*
+bin/*
 Ropes/Properties/*
-*.csproj
-RopeTest/obj/*
-RopeTest/bin/*
+RopesTest/obj/*
+RopesTest/bin/*
 *.txt
+packages/*
