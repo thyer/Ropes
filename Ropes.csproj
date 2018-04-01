@@ -81,7 +81,7 @@
     <Compile Include="Ropes\Implementations\FlatCharArrayRope.cs" />
     <Compile Include="Ropes\Implementations\FlatCharSequenceRope.cs" />
     <Compile Include="Ropes\Implementations\FlatRope.cs" />
-    <Compile Include="Ropes\Implementations\RepeatedCharacterSequence.cs" />
+    <Compile Include="Ropes\RepeatedCharacterSequence.cs" />
     <Compile Include="Ropes\Implementations\ReverseRope.cs" />
     <Compile Include="Ropes\Implementations\RopeDeque.cs" />
     <Compile Include="Ropes\Implementations\RopeUtilities.cs" />

@@ -2,7 +2,7 @@
 
 namespace Ropes.Implementations
 {
-	internal class RepeatedCharacterSequence : CharSequence
+	public class RepeatedCharacterSequence : CharSequence
 	{
 		private char padChar;
 		private int toPad;

@@ -290,7 +290,7 @@ namespace Ropes.Implementations
 		public Rope TrimEnd()
 		{
 			int index = this.Length() + 1;
-			foreach (char c in this)
+			foreach (char c in this.Reverse())
 			{
 				--index;
 				if (c > 0x20 && !char.IsWhiteSpace(c))

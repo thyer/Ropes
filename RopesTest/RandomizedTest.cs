@@ -70,12 +70,12 @@ namespace RopeTest
 		[TestMethod]
 		public void RandomActionsCompareToString()
 		{
-			// Performs 500 random actions on both a string and a rope, comparing the two after each action
+			// Performs 50000 random actions on both a string and a rope, comparing the two after each action
 			char[] output = ReadChristmasCarol();
 			Rope ropeCC = RopeBuilder.BUILD(output);
 			string strCC = new string(output);
 
-			for (int i = 0; i < 5000; ++i)
+			for (int i = 0; i < 50000; ++i)
 			{
 				// useful values for random access
 				int length = ropeCC.Length();
@@ -99,7 +99,8 @@ namespace RopeTest
 						Enumerate(ropeCC);
 						break;
 					case Action.Reverse:
-						//ropeCC = Reverse(ropeCC);
+						ropeCC = Reverse(ropeCC);
+						strCC = (string) strCC.Reverse();
 						break;
 					case Action.IndexOf:
 						int fromIndex = rand.Next(ropeCC.Length() / 4);
@@ -117,7 +118,8 @@ namespace RopeTest
 						break;
 					case Action.TrimStart:
 					case Action.TrimEnd:
-						//ropeCC = Trim(ropeCC);
+						ropeCC = Trim(ropeCC);
+						strCC = strCC.Trim();
 						break;
 					case Action.Subsequence:
 						ropeCC = Subsequence(ropeCC, start, end);
@@ -236,8 +238,7 @@ namespace RopeTest
 		private Rope Reverse(Rope ropeCC)
 		{
 			log.WriteLine(GetCurrentMethod());
-			// TODO: implement reverse
-			return ropeCC;
+			return ropeCC.Reverse();
 		}
 
 		private void Enumerate(Rope ropeCC)

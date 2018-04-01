@@ -7,66 +7,86 @@ namespace Ropes.Implementations
 {
 	internal class ReverseRope : AbstractRope
 	{
-		private Rope flatCharArrayRope;
+		private AbstractRope internalRope;
 
-		public ReverseRope(Rope flatCharArrayRope)
+		public ReverseRope(AbstractRope rope)
 		{
-			this.flatCharArrayRope = flatCharArrayRope;
+			this.internalRope = rope;
 		}
 
 		public override char CharAt(int index)
 		{
-			throw new NotImplementedException();
+			return internalRope.CharAt(internalRope.Length() - 1 - index);
 		}
 
 		public override byte Depth()
 		{
-			throw new NotImplementedException();
+			return internalRope.Depth();
 		}
 
 		public override IEnumerator GetEnumerator()
 		{
-			throw new NotImplementedException();
+			return internalRope.GetReverseEnumerator(0);
 		}
 
 		public override IEnumerator<char> GetEnumerator(int offset)
 		{
-			throw new NotImplementedException();
+			return internalRope.GetReverseEnumerator(offset);
 		}
 
 		public override int GetHashCode()
 		{
-			throw new NotImplementedException();
+			int output = internalRope.GetHashCode();
+			output = 23 * output + 19;
+			return output;
 		}
 
 		public override int IndexOf(char ch)
 		{
-			throw new NotImplementedException();
+			int index = -1;
+			IEnumerator<char> reverseEnumerator = (IEnumerator<char>)GetEnumerator();
+			while (reverseEnumerator.MoveNext())
+			{
+				++index;
+				if(reverseEnumerator.Current == ch)
+					return index;
+			}
+
+			return -1;
 		}
 
 		public override int Length()
 		{
-			throw new NotImplementedException();
+			return internalRope.Length();
 		}
 
 		public override Rope Reverse()
 		{
-			throw new NotImplementedException();
+			return internalRope;
 		}
 
 		public override IEnumerator<char> GetReverseEnumerator(int start)
 		{
-			throw new NotImplementedException();
+			return internalRope.GetEnumerator(start);
 		}
 
 		public override Rope SubSequence(int start, int end)
 		{
-			throw new NotImplementedException();
+			int length = internalRope.Length();
+			return internalRope.SubSequence(length - 1 - end, length - 1 - start).Reverse();
 		}
 
 		public override string ToString()
 		{
-			throw new NotImplementedException();
+			char[] output = new char[Length()];
+			int i = 0;
+			IEnumerator<char> reverseEnumerator = (IEnumerator<char>)GetEnumerator();
+			while (reverseEnumerator.MoveNext())
+			{
+				output[i] = reverseEnumerator.Current;
+			}
+
+			return new string(output);
 		}
 	}
 }

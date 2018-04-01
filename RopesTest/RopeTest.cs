@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections;
+using Ropes.Implementations;
 
 namespace RopeTest
 {
@@ -73,18 +74,11 @@ namespace RopeTest
 
 		private void Compare(Rope ropeTest, string strTest)
 		{
-			Assert.AreEqual(strTest.IndexOf("H"), ropeTest.IndexOf("H"));
-			Assert.AreEqual(strTest.IndexOf('H'), ropeTest.IndexOf('H'));
-			Assert.AreEqual(strTest.IndexOf("Hello, world"), ropeTest.IndexOf("Hello, world"));
-			Assert.AreEqual(strTest.IndexOf("Hello, world!"), ropeTest.IndexOf("Hello, world!"));
-			Assert.AreEqual(strTest.IndexOf("el"), ropeTest.IndexOf("el"));
-			Assert.AreEqual(strTest.IndexOf("l"), ropeTest.IndexOf("l"));
-			Assert.AreEqual(strTest.IndexOf('1'), ropeTest.IndexOf('1'));
-			Assert.AreEqual(strTest.IndexOf("ld!"), ropeTest.IndexOf("ld!"));
-			Assert.AreEqual(strTest.IndexOf("x"), ropeTest.IndexOf("x"));
-			Assert.AreEqual(strTest.IndexOf('x'), ropeTest.IndexOf('x'));
-			Assert.AreEqual(strTest.IndexOf("hello, world"), ropeTest.IndexOf("hello, world"));
-			Assert.AreEqual(strTest.IndexOf("ld! "), ropeTest.IndexOf("ld! "));
+			Assert.AreEqual(ropeTest.Length(), strTest.Length);
+			for(int i = 0; i < ropeTest.Length(); ++i)
+			{
+				Assert.AreEqual(ropeTest.CharAt(i), strTest[i]);
+			}
 		}
 
 		[TestMethod]
@@ -139,6 +133,63 @@ namespace RopeTest
 			r = RopeBuilder.BUILD("aaaaaaaaaaaa1111");
 			r = r.Append("1bbbbbbbbbbbbbbbb");
 			Assert.AreEqual(r.IndexOf("1111", 3), 12);
+		}
+
+		[TestMethod]
+		public void AddRemoveFromMiddle_RopeStringEquivalence()
+		{
+			string str = "11111";
+			Rope r = RopeBuilder.BUILD(new RepeatedCharacterSequence('1', 5));
+
+			str = str.Insert(1, "aa");
+			r = r.Insert(1, "aa");
+			Compare(r, str);
+
+			Assert.AreEqual(str.IndexOf("aa", 1), r.IndexOf("aa", 1));
+
+			str = str.Remove(1, 2);
+			r = r.Delete(1, 3);
+			Compare(r, str);
+
+			Assert.AreEqual(str.IndexOf("aa", 1), r.IndexOf("aa", 1));
+			Assert.AreEqual(str.IndexOf("doesn't exist", 1), r.IndexOf("doesn't exist", 1));
+		}
+
+		[TestMethod]
+		public void TrimWhitespace_RopeStringEquivalence()
+		{
+			string str = "11111";
+			Rope r = RopeBuilder.BUILD(new RepeatedCharacterSequence('1', 5));
+
+			str = str.Insert(1, "aa");
+			r = r.Insert(1, "aa");
+			Compare(r, str);
+
+			// Add spaces onto the end and trim
+			r = r.Append("  ");
+			str = str + "  ";
+			Compare(r, str);
+
+			r = r.Trim();
+			str = str.Trim();
+
+			Compare(r, str);
+
+			// Trim without any whitespace
+			r = r.Trim();
+			str = str.Trim();
+
+			Compare(r, str);
+
+			// Lots of whitespace at the beginning
+			r = r.PadStart(r.Length() + 2);
+			str = "  " + str;
+			Compare(r, str);
+
+			r = r.Trim();
+			str = str.Trim();
+
+			Compare(r, str);
 		}
 	}
 }
