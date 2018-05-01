@@ -174,6 +174,14 @@ public interface Rope : IEnumerable, IComparable, CharSequence
 	new Rope SubSequence(int start, int end);
 
 	/// <summary>
+	/// Returns a new rope denoting the subsequence from position start to
+	/// the end of the rope
+	/// </summary>
+	/// <param name="start">the starting position</param>
+	/// <returns>a new rope denoting the subsequence</returns>
+	Rope SubSequence(int start);
+
+	/// <summary>
 	/// Trims all whitespace from the beginning and end of this rope
 	/// </summary>
 	/// <returns>a whitespace-trimmed rope</returns>

@@ -73,7 +73,7 @@ namespace Ropes.Implementations
 		public override Rope SubSequence(int start, int end)
 		{
 			int length = internalRope.Length();
-			return internalRope.SubSequence(length - 1 - end, length - 1 - start).Reverse();
+			return internalRope.SubSequence(length - end, length - start).Reverse();
 		}
 
 		public override string ToString()
@@ -84,6 +84,7 @@ namespace Ropes.Implementations
 			while (reverseEnumerator.MoveNext())
 			{
 				output[i] = reverseEnumerator.Current;
+				i++;
 			}
 
 			return new string(output);

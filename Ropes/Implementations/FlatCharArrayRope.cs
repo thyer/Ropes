@@ -174,7 +174,13 @@ namespace Ropes.Implementations
 
 		public override IEnumerator<char> GetReverseEnumerator(int start)
 		{
-			return this.sequence.Reverse().GetEnumerator();
+			IEnumerator<char> output = this.sequence.Reverse().GetEnumerator();
+			while(start > 0)
+			{
+				start--;
+				output.MoveNext();
+			}
+			return output;
 		}
 	}
 }

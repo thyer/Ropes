@@ -13,6 +13,22 @@ namespace RopeTest
 			return rope.SubSequence(start, end).ToString();
 		}
 
+		private static string StringReverse(string str)
+		{
+			char[] rgch = str.ToCharArray();
+			Array.Reverse(rgch);
+			return new string(rgch);
+		}
+
+		private static void Compare(Rope ropeTest, string strTest)
+		{
+			Assert.AreEqual(ropeTest.Length(), strTest.Length);
+			for (int i = 0; i < ropeTest.Length(); ++i)
+			{
+				Assert.AreEqual(ropeTest.CharAt(i), strTest[i]);
+			}
+		}
+
 		[TestMethod]
 		public void TestSubstringDelete()
 		{
@@ -70,15 +86,6 @@ namespace RopeTest
 			ropeTest = ropeTest.Append("123456789");
 			strTest = strTest + "123456789";
 			Compare(ropeTest, strTest);
-		}
-
-		private void Compare(Rope ropeTest, string strTest)
-		{
-			Assert.AreEqual(ropeTest.Length(), strTest.Length);
-			for(int i = 0; i < ropeTest.Length(); ++i)
-			{
-				Assert.AreEqual(ropeTest.CharAt(i), strTest[i]);
-			}
 		}
 
 		[TestMethod]
@@ -189,6 +196,99 @@ namespace RopeTest
 			r = r.Trim();
 			str = str.Trim();
 
+			Compare(r, str);
+		}
+
+		[TestMethod]
+		public void SubstringRopeReverse_RopeStringEquivalence()
+		{
+			string str = "abcdefghijklmnopqrstuvwxyz";
+			Rope r = RopeBuilder.BUILD(str);
+
+			str = str.Substring(15);
+			r = r.SubSequence(15, r.Length());
+			Compare(r, str);
+
+			str = StringReverse(str);
+			r = r.Reverse();
+			Compare(r, str);
+
+			str = str + "  ";
+			r = r.PadEnd(r.Length() + 2);
+			Compare(r, str);
+		}
+
+		[TestMethod]
+		public void TrimPaddedReverseRope_RopeStringEquivalence()
+		{
+			string str = "abcdefghijklmnopqrstuvwxyz   ";
+			Rope r = RopeBuilder.BUILD(str);
+
+			str = "   " + str;
+			r = r.PadStart(r.Length() + 3);
+			Compare(r, str);
+
+			str = str.Substring(2, 18);
+			r = r.SubSequence(2, 20);
+			Compare(r, str);
+
+			str = StringReverse(str);
+			r = r.Reverse();
+			Compare(r, str);
+
+			str = str.Trim();
+			r = r.Trim();
+			Compare(r, str);
+		}
+
+		[TestMethod]
+		public void AppendReversedSubstrings_RopeStringEquivalence()
+		{
+			string str = "abcdefghijklmnopqrstuvwxyz   ";
+			Rope r = RopeBuilder.BUILD(str);
+
+			str = "   " + str;
+			r = r.PadStart(r.Length() + 3);
+			Compare(r, str);
+
+			str = StringReverse(str.Substring(2)) + StringReverse(str.Substring(2, 6));
+			r = r.SubSequence(2).Reverse().Append(r.SubSequence(2, 8).Reverse());
+			Compare(r, str);
+
+			str = str.Trim();
+			r = r.Trim();
+			Compare(r, str);
+
+			str = str.Substring(5);
+			r = r.SubSequence(5);
+			Compare(r, str);
+		}
+
+		[TestMethod]
+		public void DeleteFromMiddleOfReverse_RopeStringEquivalence()
+		{
+			string str = "Hello darkness, my old 12345friend";
+			Rope r = RopeBuilder.BUILD(str);
+
+			str = StringReverse(str);
+			r = r.Reverse();
+			Compare(r, str);
+
+			str = str.Remove(6, 5);
+			string s1 = r.SubSequence(0, 6).ToString();
+			string s2 = r.SubSequence(11, r.Length()).ToString();
+			r = r.Delete(6, 11);
+			Compare(r, str);
+		}
+
+		[TestMethod]
+		public void TrimShortStrings_RopeStringEquivalence()
+		{
+			string str = " ";
+			Rope r = RopeBuilder.BUILD(str);
+
+			str = str.Trim();
+			r = r.Trim();
 			Compare(r, str);
 		}
 	}

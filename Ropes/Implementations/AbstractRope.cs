@@ -59,7 +59,8 @@ namespace Ropes.Implementations
 			{
 				throw new ArgumentException(System.String.Format("start ({0}) less than end ({1})", start.ToString(), end.ToString()));
 			}
-			return this.SubSequence(0, start).Append(this.SubSequence(end, this.Length()).ToString());
+
+			return SubSequence(0, start).Append(SubSequence(end, this.Length()).ToString());
 		}
 
 		/// <summary>
@@ -282,6 +283,11 @@ namespace Ropes.Implementations
 
 		public abstract Rope SubSequence(int start, int end);
 
+		public Rope SubSequence(int start)
+		{
+			return SubSequence(start, this.Length());
+		}
+
 		public Rope Trim()
 		{
 			return this.TrimStart().TrimEnd();
@@ -289,6 +295,11 @@ namespace Ropes.Implementations
 
 		public Rope TrimEnd()
 		{
+			if (Length() == 1 && CharAt(0).Equals(' ')) // special case
+			{
+				return this.SubSequence(1, 1);
+			}
+
 			int index = this.Length() + 1;
 			foreach (char c in this.Reverse())
 			{
@@ -304,6 +315,11 @@ namespace Ropes.Implementations
 
 		public Rope TrimStart()
 		{
+			if(Length() == 1 && CharAt(0).Equals(' ')) // special case
+			{
+				return this.SubSequence(1, 1);
+			}
+
 			int index = -1;
 			foreach(char c in this)
 			{

@@ -43,7 +43,7 @@ internal class FlatCharSequenceRope : AbstractRope, FlatRope
 
 	public override IEnumerator<char> GetReverseEnumerator(int offset)
 	{
-		throw new NotImplementedException();
+		return new FlatCharSequenceRopeReverseEnumerator(this, offset);
 	}
 
 	public override int Length()
@@ -128,6 +128,62 @@ internal class FlatCharSequenceRope : AbstractRope, FlatRope
 		public void Dispose()
 		{
 			return;
+		}
+	}
+
+	private class FlatCharSequenceRopeReverseEnumerator : IEnumerator<char>
+	{
+		private FlatCharSequenceRope flatCharSequenceRope;
+		private int initialOffset;
+		private int curPosition;
+
+		public FlatCharSequenceRopeReverseEnumerator(FlatCharSequenceRope flatCharSequenceRope) : this(flatCharSequenceRope, 0)
+		{
+
+		}
+
+		public FlatCharSequenceRopeReverseEnumerator(FlatCharSequenceRope flatCharSequenceRope, int offset)
+		{
+			this.flatCharSequenceRope = flatCharSequenceRope;
+			this.initialOffset = offset;
+			this.curPosition = flatCharSequenceRope.Length() - offset;
+		}
+
+		public char Current
+		{
+			get
+			{
+				return flatCharSequenceRope.CharAt(curPosition);
+			}
+		}
+
+		object IEnumerator.Current
+		{
+			get
+			{
+				return flatCharSequenceRope.CharAt(curPosition);
+			}
+		}
+
+		public void Dispose()
+		{
+			return;
+		}
+
+		public bool MoveNext()
+		{
+			if(curPosition == 0)
+			{
+				return false;
+			}
+
+			curPosition--;
+			return true;
+		}
+
+		public void Reset()
+		{
+			this.curPosition = flatCharSequenceRope.Length() - initialOffset;
 		}
 	}
 }

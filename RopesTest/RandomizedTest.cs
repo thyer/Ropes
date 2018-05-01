@@ -13,7 +13,7 @@ namespace RopeTest
 	{
 		private static int seed = 3141592;
 		private static Random rand = new Random(RandomizedTest.seed);
-		private static int lenCC = 159486;
+		private static int lenCC = 156882;
 		private static StreamWriter log = new StreamWriter("log.txt");
 
 		[TestMethod]
@@ -70,7 +70,7 @@ namespace RopeTest
 		[TestMethod]
 		public void RandomActionsCompareToString()
 		{
-			// Performs 50000 random actions on both a string and a rope, comparing the two after each action
+			// Performs random actions on both a string and a rope, comparing the two after each action
 			char[] output = ReadChristmasCarol();
 			Rope ropeCC = RopeBuilder.BUILD(output);
 			string strCC = new string(output);
@@ -84,7 +84,8 @@ namespace RopeTest
 				end = Math.Min(end, length);
 
 				Array values = Enum.GetValues(typeof(Action));
-				switch ((Action)values.GetValue(rand.Next(values.Length)))
+				Action performAction = (Action)values.GetValue(rand.Next(values.Length));
+				switch (performAction)
 				{
 					case Action.Append:
 						string randomAppend = GetRandomString();
@@ -100,7 +101,9 @@ namespace RopeTest
 						break;
 					case Action.Reverse:
 						ropeCC = Reverse(ropeCC);
-						strCC = (string) strCC.Reverse();
+						char[] charCC = strCC.ToCharArray();
+						Array.Reverse(charCC);
+						strCC = new String(charCC);
 						break;
 					case Action.IndexOf:
 						int fromIndex = rand.Next(ropeCC.Length() / 4);
@@ -325,7 +328,8 @@ namespace RopeTest
 		{
 			char[] output = new char[lenCC];
 			StreamReader reader = new StreamReader("TestRepo/AChristmasCarol.txt");
-			reader.Read(output, 0, lenCC);
+			int lenRead = reader.Read(output, 0, lenCC);
+			Assert.AreEqual(lenRead, lenCC, "Replace lenCC above with the correct number");
 
 			return output;
 		}
