@@ -49,7 +49,7 @@ namespace Ropes.Implementations
 			return this.Length() - sequence.Length;
 		}
 
-		public Rope Delete(int start, int end)
+		public Rope Remove(int start, int end)
 		{
 			if (start == end)
 			{

@@ -93,7 +93,7 @@ namespace RopeTest
 						strCC = strCC + randomAppend;
 						break;
 					case Action.Delete:
-						ropeCC = ropeCC.Delete(start, end);
+						ropeCC = ropeCC.Remove(start, end);
 						strCC = strCC.Remove(start, end - start);
 						break;
 					case Action.Enumerate:
@@ -262,7 +262,7 @@ namespace RopeTest
 		{
 			log.WriteLine(GetCurrentMethod());
 			log.WriteLine(String.Format("Start:{0}, End:{1}", start, end));
-			return ropeCC.Delete(start, end);
+			return ropeCC.Remove(start, end);
 		}
 
 		private Rope DeleteRandom(Rope ropeCC)

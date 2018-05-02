@@ -14,22 +14,22 @@ public interface Rope : IEnumerable, IComparable, CharSequence
 	Rope Append(char c);
 
 	/// <summary>
-	/// Returns a new rope created by appending the specified character sequence to
+	/// Returns a new rope created by appending the specified string to
 	/// this rope
 	/// </summary>
 	/// <param name="suffix">the sequence to append</param>
 	/// <returns>a new rope</returns>
-	Rope Append(String suffix);
+	Rope Append(string suffix);
 
 	/// <summary>
-	/// Returns a new rope created by appending the specified character range to
+	/// Returns a new rope created by appending the specified string to
 	/// this rope
 	/// </summary>
-	/// <param name="csq">the specified character</param>
+	/// <param name="suffix">the specified string</param>
 	/// <param name="start">the start index, inclusive</param>
 	/// <param name="end">the end index, non-inclusive</param>
 	/// <returns>a new rope</returns>
-	Rope Append(String csq, int start, int end);
+	Rope Append(string suffix, int start, int end);
 
 	/// <summary>
 	/// Returns a new rope created by appending the specified rope to it
@@ -46,7 +46,7 @@ public interface Rope : IEnumerable, IComparable, CharSequence
 	new char CharAt(int index);
 
 	/// <summary>
-	/// Creats a new rope by delete the specified character substring.
+	/// Creates a new rope by deleting the specified character substring.
 	/// The substring begins at the specified start and extends to
 	/// the character at index end or to the end of the
 	/// sequence if no such character exists. If
@@ -56,14 +56,14 @@ public interface Rope : IEnumerable, IComparable, CharSequence
 	/// <param name="start">the beginning index, inclusive</param>
 	/// <param name="end">the ending index, inclusive</param>
 	/// <returns>this rope</returns>
-	Rope Delete(int start, int end);
+	Rope Remove(int start, int end);
 
 	/// <summary>
 	/// Returns an enumerator positioned to start at the specified index
 	/// </summary>
 	/// <param name="start">the starting index</param>
 	/// <returns>An enumerator positioned to start at the specified index</returns>
-	IEnumerator<char> GetEnumerator(int start);
+	IEnumerator<char> GetEnumerator(int start = 0);
 
 	/// <summary>
 	/// Returns an enumerator positioned to start from the specified index
@@ -139,12 +139,6 @@ public interface Rope : IEnumerable, IComparable, CharSequence
 	new int Length();
 
 	/// <summary>
-	/// Trims all whitespace from the beginning of this string
-	/// </summary>
-	/// <returns>a rope with all leading whitespace trimmed</returns>
-	Rope TrimStart();
-
-	/// <summary>
 	/// Rebalances the current rope, returning the rebalance rope. In general,
 	/// rope rebalancing is handled automatically, but this method is provided
 	/// to give users more control
@@ -157,12 +151,6 @@ public interface Rope : IEnumerable, IComparable, CharSequence
 	/// </summary>
 	/// <returns>a reversed copy of this rope</returns>
 	Rope Reverse();
-
-	/// <summary>
-	/// Trims all whitespace from the end of this rope
-	/// </summary>
-	/// <returns>a rope with all trailing whitespace removed</returns>
-	Rope TrimEnd();
 
 	/// <summary>
 	/// Returns a new rope denoting the subsequence from position start to 
@@ -186,6 +174,18 @@ public interface Rope : IEnumerable, IComparable, CharSequence
 	/// </summary>
 	/// <returns>a whitespace-trimmed rope</returns>
 	Rope Trim();
+
+	/// <summary>
+	/// Trims all whitespace from the end of this rope
+	/// </summary>
+	/// <returns>a rope with all trailing whitespace removed</returns>
+	Rope TrimEnd();
+
+	/// <summary>
+	/// Trims all whitespace from the beginning of this string
+	/// </summary>
+	/// <returns>a rope with all leading whitespace trimmed</returns>
+	Rope TrimStart();
 
 	/// <summary>
 	/// Increase the length of this rope to the specified length by prepending

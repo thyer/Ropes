@@ -35,13 +35,13 @@ namespace RopeTest
 			string s = "12345678902234567890";
 
 			Rope rope = RopeBuilder.BUILD(s);
-			rope = rope.Delete(0, 1);
+			rope = rope.Remove(0, 1);
 			Assert.AreEqual("23", RopeToString(rope, 0, 2));
 			Assert.AreEqual("", RopeToString(rope, 0, 0));
 			Assert.AreEqual("902", RopeToString(rope, 7, 10));
 
 			rope = RopeBuilder.BUILD(s.ToCharArray());
-			rope = rope.Delete(0, 1);
+			rope = rope.Remove(0, 1);
 			Assert.AreEqual("23", RopeToString(rope, 0, 2));
 			Assert.AreEqual("", RopeToString(rope, 0, 0));
 			Assert.AreEqual("902", RopeToString(rope, 7, 10));
@@ -92,7 +92,7 @@ namespace RopeTest
 		public void TestIterator()
 		{
 			Rope r = RopeBuilder.BUILD("01234aaa56789");
-			r = r.Delete(5, 8); // "0123456789"
+			r = r.Remove(5, 8); // "0123456789"
 			for(int i = 0; i < r.Length(); ++i)
 			{
 				Assert.AreEqual("0123456789"[i], r.CharAt(i));
@@ -118,7 +118,7 @@ namespace RopeTest
 			Rope r = RopeBuilder.BUILD("01234aaa56789");
 			r = r.Insert(4, "0000001123456");
 			r = r.Insert(3, "hello, stranger");
-			r = r.Delete(4, 10);
+			r = r.Remove(4, 10);
 			r = r.Insert(0, "      ");
 			r = r.SubSequence(3, 17);
 
@@ -155,7 +155,7 @@ namespace RopeTest
 			Assert.AreEqual(str.IndexOf("aa", 1), r.IndexOf("aa", 1));
 
 			str = str.Remove(1, 2);
-			r = r.Delete(1, 3);
+			r = r.Remove(1, 3);
 			Compare(r, str);
 
 			Assert.AreEqual(str.IndexOf("aa", 1), r.IndexOf("aa", 1));
@@ -277,7 +277,7 @@ namespace RopeTest
 			str = str.Remove(6, 5);
 			string s1 = r.SubSequence(0, 6).ToString();
 			string s2 = r.SubSequence(11, r.Length()).ToString();
-			r = r.Delete(6, 11);
+			r = r.Remove(6, 11);
 			Compare(r, str);
 		}
 
