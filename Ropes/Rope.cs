@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Ropes.Implementations;
 using Ropes;
 
 public interface Rope : IEnumerable, IComparable, CharSequence

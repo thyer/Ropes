@@ -5,122 +5,108 @@ using System.IO;
 
 namespace RopeTest
 {
-	[TestClass]
-	public class PerformanceTest
-	{
-		private static int seed = 342342;
-		private static Random rand = new Random(PerformanceTest.seed);
-		private static int lenCC = 159486;
+    [TestClass]
+    public class PerformanceTest
+    {
+        private static readonly StreamWriter writer = new StreamWriter("output.txt");
+        private static readonly Stopwatch sw = new Stopwatch();
 
-		private const int ITERATION_COUNT = 7;
-		private const int PLAN_LENGTH = 500;
+        [TestInitialize]
+        public void Setup()
+        {
+            sw.Reset();
+        }
 
-		private static String complexString = null;
-		private static Rope complexRope = null;
+        [TestMethod]
+        public void ChristmasCarolPerf_Read()
+        {
+            string strCC = ReadChristmasCarol();
 
-		private static StreamWriter writer = new StreamWriter("output.txt");
-		private static Stopwatch sw = new Stopwatch();
+            sw.Start();
+            Rope ropeCC = RopeBuilder.BUILD(strCC);
+            sw.Stop();
 
-		[TestInitialize]
-		public void Setup()
-		{
-			sw.Reset();
-		}
+            Report("Constructed rope from ChristmasCarol string", sw.Elapsed);
+        }
 
-		[TestMethod]
-		public void ChristmasCarolPerf_Read()
-		{
-			char[] output = ReadChristmasCarol();
-			string strCC = new string(output);
+        [TestMethod]
+        public void ChristmasCarolPerf_DeleteFront()
+        {
+            string strCC = new string(ReadChristmasCarol());
+            Rope ropeCC = RopeBuilder.BUILD(strCC);
 
-			sw.Start();
-			Rope ropeCC = RopeBuilder.BUILD(strCC);
-			sw.Stop();
+            sw.Start();
+            strCC = strCC.Remove(5, 550);
+            sw.Stop();
+            Report("Substring time for ChristmasCarol string", sw.Elapsed);
 
-			Report("Constructed rope from ChristmasCarol string", sw.Elapsed);
-		}
+            sw.Restart();
+            ropeCC = ropeCC.SubSequence(5, 555);
+            sw.Stop();
+            Report("Substring time for ChristmasCarol Rope", sw.Elapsed);
+        }
 
-		[TestMethod]
-		public void ChristmasCarolPerf_DeleteFront()
-		{
-			string strCC = new string(ReadChristmasCarol());
-			Rope ropeCC = RopeBuilder.BUILD(strCC);
+        [TestMethod]
+        public void ChristmasCarolPerf_DeleteEnd()
+        {
+            string strCC = new string(ReadChristmasCarol());
+            Rope ropeCC = RopeBuilder.BUILD(strCC);
+            int length = strCC.Length;
 
-			sw.Start();
-			strCC = strCC.Remove(5, 550);
-			sw.Stop();
-			Report("Substring time for ChristmasCarol string", sw.Elapsed);
+            sw.Start();
+            strCC = strCC.Remove(length - 550, 550);
+            sw.Stop();
+            Report("Substring time for ChristmasCarol string", sw.Elapsed);
 
-			sw.Restart();
-			ropeCC = ropeCC.SubSequence(5, 555);
-			sw.Stop();
-			Report("Substring time for ChristmasCarol Rope", sw.Elapsed);
-		}
+            sw.Restart();
+            ropeCC = ropeCC.SubSequence(length - 550, length);
+            sw.Stop();
+            Report("Substring time for ChristmasCarol Rope", sw.Elapsed);
+        }
 
-		[TestMethod]
-		public void ChristmasCarolPerf_DeleteEnd()
-		{
-			string strCC = new string(ReadChristmasCarol());
-			Rope ropeCC = RopeBuilder.BUILD(strCC);
+        [TestMethod]
+        public void ChristmasCarolPerf_InsertFront()
+        {
+            string strCC = new string(ReadChristmasCarol());
+            Rope ropeCC = RopeBuilder.BUILD(strCC);
 
-			sw.Start();
-			strCC = strCC.Remove(lenCC - 550, 550);
-			sw.Stop();
-			Report("Substring time for ChristmasCarol string", sw.Elapsed);
+            sw.Start();
+            strCC = strCC.Insert(0, "hello!");
+            sw.Stop();
+            Report("Insertion time for ChristmasCarol string", sw.Elapsed);
 
-			sw.Restart();
-			ropeCC = ropeCC.SubSequence(lenCC - 550, lenCC);
-			sw.Stop();
-			Report("Substring time for ChristmasCarol Rope", sw.Elapsed);
-		}
+            sw.Restart();
+            ropeCC = ropeCC.Insert(0, "hello!");
+            sw.Stop();
+            Report("Insertion time for ChristmasCarol Rope", sw.Elapsed);
+        }
 
-		[TestMethod]
-		public void ChristmasCarolPerf_InsertFront()
-		{
-			string strCC = new string(ReadChristmasCarol());
-			Rope ropeCC = RopeBuilder.BUILD(strCC);
+        [TestMethod]
+        public void ChristmasCarolPerf_InsertBack()
+        {
+            string strCC = new string(ReadChristmasCarol());
+            Rope ropeCC = RopeBuilder.BUILD(strCC);
 
-			sw.Start();
-			strCC = strCC.Insert(0, "hello!");
-			sw.Stop();
-			Report("Insertion time for ChristmasCarol string", sw.Elapsed);
+            sw.Start();
+            strCC = strCC.Insert(strCC.Length - 1, "hello!");
+            sw.Stop();
+            Report("Insertion time for ChristmasCarol string", sw.Elapsed);
 
-			sw.Restart();
-			ropeCC = ropeCC.Insert(0, "hello!");
-			sw.Stop();
-			Report("Insertion time for ChristmasCarol Rope", sw.Elapsed);
-		}
+            sw.Restart();
+            ropeCC = ropeCC.Insert(ropeCC.Length() - 1, "hello!");
+            sw.Stop();
+            Report("Insertion time for ChristmasCarol Rope", sw.Elapsed);
+        }
 
-		[TestMethod]
-		public void ChristmasCarolPerf_InsertBack()
-		{
-			string strCC = new string(ReadChristmasCarol());
-			Rope ropeCC = RopeBuilder.BUILD(strCC);
+        private static string ReadChristmasCarol()
+        {
+            return RopesTest.TestStrings.AChristmasCarol;
+        }
 
-			sw.Start();
-			strCC = strCC.Insert(strCC.Length - 1, "hello!");
-			sw.Stop();
-			Report("Insertion time for ChristmasCarol string", sw.Elapsed);
-
-			sw.Restart();
-			ropeCC = ropeCC.Insert(ropeCC.Length() - 1, "hello!");
-			sw.Stop();
-			Report("Insertion time for ChristmasCarol Rope", sw.Elapsed);
-		}
-
-		private static char[] ReadChristmasCarol()
-		{
-			char[] output = new char[lenCC];
-			StreamReader reader = new StreamReader("TestRepo/AChristmasCarol.txt");
-			reader.Read(output, 0, lenCC);
-
-			return output;
-		}
-
-		private void Report(string message, TimeSpan span)
-		{
-			writer.WriteLine(message + ", " + span);
-			writer.Flush();
-		}
-	}
+        private void Report(string message, TimeSpan span)
+        {
+            writer.WriteLine(message + ", " + span);
+            writer.Flush();
+        }
+    }
 }

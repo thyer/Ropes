@@ -3,9 +3,9 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProjectGuid>{633370B3-C865-4845-A6BC-D06AAA0CE907}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <NoStandardLibraries>false</NoStandardLibraries>
-    <AssemblyName>ConsoleApplication</AssemblyName>
+    <AssemblyName>Ropes</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -31,6 +31,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <RootNamespace>Ropes</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
@@ -86,7 +89,6 @@
     <Compile Include="Ropes\Implementations\RopeDeque.cs" />
     <Compile Include="Ropes\Implementations\RopeUtilities.cs" />
     <Compile Include="Ropes\Implementations\SubStringRope.cs" />
-    <Compile Include="Ropes\Program.cs" />
     <Compile Include="Ropes\Rope.cs" />
     <Compile Include="Ropes\RopeBuilder.cs" />
   </ItemGroup>
